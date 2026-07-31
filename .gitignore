@@ -1,0 +1,5 @@
+.DS_Store
+raw_data/
+df_base.csv
+.ipynb_checkpoints/
+
