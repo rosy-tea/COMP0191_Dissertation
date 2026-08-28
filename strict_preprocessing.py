@@ -325,20 +325,19 @@ def build_strict_cohort(raw: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, 
 
 
 def main() -> None:
-    # All files are read from / written to the folder containing this script
+    # Read the raw database from the repository root and write the processed
+    # dataset for use by the downstream notebooks.
     folder = Path(__file__).resolve().parent
 
-    #input_path = folder / "perovskite_data.csv"
-    output_path = folder / "df_base.csv"
+    input_path = folder / "perovskite_data.csv"
+    output_path = folder / "notebooks" / "df_base.csv"
     audit_csv = folder / "strict_preprocessing_stage_counts.csv"
-    #quality_json = folder / "strict_preprocessing_quality.json"
 
-    raw = pd.read_csv("perovskite_data.csv", low_memory=False)
+    raw = pd.read_csv(input_path, low_memory=False)
     strict, audit, quality = build_strict_cohort(raw)
 
     strict.to_csv(output_path, index=False)
     audit.to_csv(audit_csv, index=False)
-    #quality_json.write_text(json.dumps(quality, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
     print(audit.to_string(index=False))
     print(json.dumps(quality, indent=2, ensure_ascii=False))
