@@ -22,10 +22,10 @@ The results show that explicit representation of device and layer structure impr
 
 ### Experimental notebooks
 
-1. `notebooks/01_evaluation_stability''.ipynb`  
+1. `notebooks/01_evaluation_stability.ipynb`  
    Compares repeated cross-validation with repeated random held-out evaluation.
 
-2. `notebooks/02_source_aware_canonical207_fixed_RF.ipynb`  
+2. `notebooks/02_source_aware.ipynb`  
    Evaluates model transfer to devices from previously unseen DOI sources.
 
 3. `notebooks/03_baseline_feature_expansion_heldout.ipynb`  
@@ -37,7 +37,7 @@ The results show that explicit representation of device and layer structure impr
 5. `notebooks/05_PCE_one_stage_vs_two_stage_latest_component_features.ipynb`  
    Compares direct one-stage PCE prediction with a physically structured two-stage approach using predicted Jsc, Voc, and FF.
 
-6. `notebooks/06_similar_device_diagnosis_canonical207.ipynb`  
+6. `notebooks/06_similar_device_diagnosis.ipynb`  
    Diagnoses unexplained target variation among devices with similar recorded material and device characteristics.
 
 7. `notebooks/07_model_comparison_selected_vs_allin207.ipynb`  
@@ -48,7 +48,7 @@ The results show that explicit representation of device and layer structure impr
 
 ## Execution order
 
-The preprocessing script must be run before the experimental notebooks to construct the local modelling dataset.
+Place perovskite_data.csv in the repository root and run strict_preprocessing.py. The script writes the processed df_base.csv to the notebooks/ directory for use by the downstream experiments. The experimental notebooks should therefore be run from the notebooks/ directory.
 
 Notebook 04 exports the component-specific selected-feature definitions required by notebooks 05, 07, and 08. It should therefore be run before those notebooks.
 
