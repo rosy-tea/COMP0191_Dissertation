@@ -3,3 +3,8 @@ raw_data/
 df_base.csv
 .ipynb_checkpoints/
 
+perovskite_data.csv
+.venv/
+__pycache__/
+*_outputs/
+strict_preprocessing_stage_counts.csv
