@@ -1,7 +1,6 @@
 """Build a strict, auditable PVK analysis cohort from the raw database.
 
-This is an independent branch.  It never overwrites the original 3,953-row
-``df_base.csv``.  The strict cohort requires a complete, position-preserving
+The strict cohort requires a complete, position-preserving
 material--thickness match for ETL, HTL, back contact, and perovskite layers.
 
 Recorded material categories such as ``Unknown`` and ``None`` are preserved.
@@ -166,8 +165,7 @@ def build_strict_cohort(raw: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, 
         }
     ]
 
-    # Exact duplicates only.  Do not rank by PCE and do not collapse distinct
-    # devices merely because they share a reference or baseline descriptors.
+    # Exact duplicates only.  Do not rank by PCE and do not collapse distinct devices merely because they share a reference or baseline descriptors.
     exact_duplicate = raw.duplicated(subset=original_columns, keep="first")
     working = raw.loc[~exact_duplicate].copy()
     previous = append_stage(
@@ -238,8 +236,7 @@ def build_strict_cohort(raw: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, 
     working["baseline_complete"] = mask
     strict = working.loc[mask].copy()
 
-    # Quality audit only: default PCE may be stabilised while Jsc/Voc/FF are
-    # scan-derived.  Record inconsistency instead of silently deleting it here.
+    # Quality audit only: default PCE may be stabilised while Jsc/Voc/FF are scan-derived.  Record inconsistency instead of silently deleting it here.
     calculated_pce = (
         strict["jv.default_Jsc"]
         * strict["jv.default_Voc"]
@@ -294,8 +291,7 @@ def build_strict_cohort(raw: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, 
         "component_pce_consistency_policy": "Audit only; not a cohort filter",
     }
 
-    # Preserve the same 387 raw + 24 preprocessing-column schema used by the
-    # downstream notebooks, while correcting the semantics of those fields.
+    # Preserve the same 387 raw + 24 preprocessing-column schema used by the downstream notebooks, while correcting the semantics of those fields.
     helper_columns = [
         "ETL_layers",
         "ETL_thickness_values",
@@ -333,19 +329,16 @@ def main() -> None:
     folder = Path(__file__).resolve().parent
 
     #input_path = folder / "perovskite_data.csv"
-    output_path = folder / "df_base_strict.csv"
+    output_path = folder / "df_base.csv"
     audit_csv = folder / "strict_preprocessing_stage_counts.csv"
-    quality_json = folder / "strict_preprocessing_quality.json"
+    #quality_json = folder / "strict_preprocessing_quality.json"
 
     raw = pd.read_csv("perovskite_data.csv", low_memory=False)
     strict, audit, quality = build_strict_cohort(raw)
 
     strict.to_csv(output_path, index=False)
     audit.to_csv(audit_csv, index=False)
-    quality_json.write_text(
-        json.dumps(quality, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    #quality_json.write_text(json.dumps(quality, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
     print(audit.to_string(index=False))
     print(json.dumps(quality, indent=2, ensure_ascii=False))
